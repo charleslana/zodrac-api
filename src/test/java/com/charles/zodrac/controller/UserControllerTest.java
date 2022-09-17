@@ -60,7 +60,7 @@ class UserControllerTest extends ConfigTestClass {
 
     @Order(3)
     @Test
-    @DisplayName("Should get user by id 1")
+    @DisplayName("Should get user")
     @WithMockUser(username = "admin@admin.com", password = "123456", roles = "ADMIN")
     void shouldGetUser() throws Exception {
         mockMvc.perform(get(path.concat("/1"))

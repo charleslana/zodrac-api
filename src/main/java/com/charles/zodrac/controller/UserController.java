@@ -4,6 +4,7 @@ import com.charles.zodrac.model.dto.ResponseDTO;
 import com.charles.zodrac.model.dto.UserBasicDTO;
 import com.charles.zodrac.model.dto.UserDTO;
 import com.charles.zodrac.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ public class UserController {
 
     private final UserService service;
 
+    @Operation(summary = "Create user")
     @PostMapping
     public ResponseEntity<ResponseDTO> save(@RequestBody @Valid UserDTO dto) {
         log.info("REST request to create user: {}", dto);
@@ -34,6 +36,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Get user")
     @GetMapping("/{id}")
     public ResponseEntity<UserBasicDTO> get(@PathVariable("id") Long id) {
         log.info("REST request to get user: {}", id);
@@ -41,6 +44,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @Operation(summary = "Get user detail")
     @GetMapping("/detail")
     public ResponseEntity<UserBasicDTO> getDetail() {
         log.info("REST request to get user detail");
@@ -48,6 +52,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(summary = "Get all users")
     @GetMapping
     public ResponseEntity<Page<UserBasicDTO>> getAll(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,

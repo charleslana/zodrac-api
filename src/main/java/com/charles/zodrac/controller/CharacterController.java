@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/character")
+@RequestMapping("/character")
 @RequiredArgsConstructor
 @Slf4j
 public class CharacterController {

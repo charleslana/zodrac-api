@@ -54,17 +54,14 @@ public class CharacterService {
         return repository.findAllByUserId(pageRequest, userService.getAuthAccount().getId()).map(mapper::toBasicDto);
     }
 
-    @Transactional
-    public ResponseDTO delete(Long id) {
-        CharacterEntity entity = getCharacterId(id);
-        repository.delete(entity);
-        return new ResponseDTO("character.delete", ms);
-    }
-
     public Page<CharacterBasicDTO> search(String searchTerm, Integer page, Integer size) {
         size = FunctionUtils.validatePageSize(size);
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "name");
         return repository.search(searchTerm.toLowerCase(), pageRequest).map(mapper::toBasicDto);
+    }
+
+    public void select(Long id) {
+        SecurityUtils.setCharacterId(getCharacterId(id).getId());
     }
 
     public void logout() {
@@ -72,8 +69,11 @@ public class CharacterService {
         SecurityUtils.removeCharacterId();
     }
 
-    public void select(Long id) {
-        SecurityUtils.setCharacterId(getCharacterId(id).getId());
+    @Transactional
+    public ResponseDTO delete(Long id) {
+        CharacterEntity entity = getCharacterId(id);
+        repository.delete(entity);
+        return new ResponseDTO("character.delete", ms);
     }
 
     public CharacterEntity getAuthCharacter() {

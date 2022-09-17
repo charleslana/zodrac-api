@@ -56,14 +56,6 @@ public class CharacterController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "Delete character")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDTO> delete(@PathVariable("id") Long id) {
-        log.info("REST request to delete character: {}", id);
-        return ResponseEntity.ok(service.delete(id));
-    }
-
-    @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Search character name")
     @GetMapping("/search")
     public ResponseEntity<Page<CharacterBasicDTO>> search(
@@ -72,6 +64,15 @@ public class CharacterController {
             @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
         log.info("REST to get search characters");
         return ResponseEntity.ok(service.search(searchTerm, page, size));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Select character")
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> select(@PathVariable("id") Long id) {
+        log.info("REST request to select character: {}", id);
+        service.select(id);
+        return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -84,11 +85,10 @@ public class CharacterController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @Operation(summary = "Select character")
-    @PostMapping("/{id}")
-    public ResponseEntity<Void> select(@PathVariable("id") Long id) {
-        log.info("REST request to select character: {}", id);
-        service.select(id);
-        return ResponseEntity.ok().build();
+    @Operation(summary = "Delete character")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseDTO> delete(@PathVariable("id") Long id) {
+        log.info("REST request to delete character: {}", id);
+        return ResponseEntity.ok(service.delete(id));
     }
 }

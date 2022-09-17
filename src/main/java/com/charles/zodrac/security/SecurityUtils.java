@@ -20,7 +20,7 @@ public class SecurityUtils {
     }
 
     public static String getAuthEmail() {
-        return getAuth().getName();
+        return ((UserDetailsDTO) getAuth().getPrincipal()).getUsername();
     }
 
     public static UserDetailsDTO getUserDetails() {

@@ -2,6 +2,7 @@ package com.charles.zodrac.controller;
 
 import com.charles.zodrac.config.ConfigTestClass;
 import com.charles.zodrac.model.dto.UserDTO;
+import com.charles.zodrac.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,8 +38,8 @@ class UserControllerTest extends ConfigTestClass {
     @DisplayName("Should create user")
     void shouldCreateUser() throws Exception {
         UserDTO dto = new UserDTO();
-        dto.setEmail("user@user.com");
-        dto.setPassword("123456");
+        dto.setEmail(TestUtils.generateRandomEmail());
+        dto.setPassword(TestUtils.generateRandomString());
 
         mockMvc.perform(post(path)
                         .content(requestBody(dto))
@@ -54,7 +55,7 @@ class UserControllerTest extends ConfigTestClass {
         mockMvc.perform(get(path)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content", hasSize(1)));
+                .andExpect(jsonPath("$.content", hasSize(3)));
     }
 
     @Order(3)

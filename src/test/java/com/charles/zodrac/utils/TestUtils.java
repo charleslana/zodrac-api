@@ -7,11 +7,11 @@ public class TestUtils {
     private TestUtils() {
     }
 
-    public static String generateEmail() {
+    public static String generateRandomEmail() {
         return RandomStringUtils.randomAlphabetic(10).concat("@example.com");
     }
 
-    public static String generateString() {
+    public static String generateRandomString() {
         return RandomStringUtils.randomAlphabetic(10);
     }
 }

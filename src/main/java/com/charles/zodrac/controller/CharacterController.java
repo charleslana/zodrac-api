@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/character")
@@ -48,11 +49,9 @@ public class CharacterController {
     @PreAuthorize("isAuthenticated()")
     @Operation(summary = "Get all characters")
     @GetMapping
-    public ResponseEntity<Page<CharacterBasicDTO>> getAll(
-            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-            @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+    public ResponseEntity<List<CharacterBasicDTO>> getAll() {
         log.info("REST request to get all characters");
-        return ResponseEntity.ok(service.getAll(page, size));
+        return ResponseEntity.ok(service.getAll());
     }
 
     @PreAuthorize("isAuthenticated()")

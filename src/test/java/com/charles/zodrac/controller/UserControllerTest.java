@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserControllerTest extends ConfigTestClass {
 
-    private final String path = "/api/user";
+    private final String path = "/user";
 
     @BeforeEach
     public void setUp() {

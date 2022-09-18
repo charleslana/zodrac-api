@@ -21,6 +21,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Lazy))
 @Slf4j
@@ -48,10 +50,8 @@ public class CharacterService {
         return repository.findById(getAuthCharacter().getId()).map(mapper::toBasicDto).orElseThrow(() -> new CustomException("character.not.found"));
     }
 
-    public Page<CharacterBasicDTO> getAll(Integer page, Integer size) {
-        size = FunctionUtils.validatePageSize(size);
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "id");
-        return repository.findAllByUserId(pageRequest, userService.getAuthAccount().getId()).map(mapper::toBasicDto);
+    public List<CharacterBasicDTO> getAll() {
+        return  repository.findAllByUserIdOrderById(userService.getAuthAccount().getId()).stream().map(mapper::toBasicDto).toList();
     }
 
     public Page<CharacterBasicDTO> search(String searchTerm, Integer page, Integer size) {

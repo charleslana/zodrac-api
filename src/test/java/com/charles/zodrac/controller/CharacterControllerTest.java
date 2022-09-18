@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(username = "user@user.com", password = "123456", roles = "USER")
 class CharacterControllerTest extends ConfigTestClass {
 
-    private final String path = "/api/character";
+    private final String path = "/character";
     private static String name;
 
     @BeforeAll
@@ -62,7 +62,7 @@ class CharacterControllerTest extends ConfigTestClass {
         mockMvc.perform(get(path)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content", hasSize(1)));
+                .andExpect(jsonPath("$.*", hasSize(1)));
     }
 
     @Order(3)

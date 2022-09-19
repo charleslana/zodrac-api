@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -50,7 +50,7 @@ class UserControllerTest extends ConfigTestClass {
     @Order(2)
     @Test
     @DisplayName("Should get all users")
-    @WithMockUser(username = "admin@admin.com", password = "123456", roles = "ADMIN")
+    @WithUserDetails("admin@admin.com")
     void shouldGetAllUsers() throws Exception {
         mockMvc.perform(get(path)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
@@ -61,7 +61,7 @@ class UserControllerTest extends ConfigTestClass {
     @Order(3)
     @Test
     @DisplayName("Should get user")
-    @WithMockUser(username = "admin@admin.com", password = "123456", roles = "ADMIN")
+    @WithUserDetails("admin@admin.com")
     void shouldGetUser() throws Exception {
         mockMvc.perform(get(path.concat("/1"))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
@@ -71,7 +71,7 @@ class UserControllerTest extends ConfigTestClass {
     @Order(4)
     @Test
     @DisplayName("Should get user detail")
-    @WithMockUser(username = "user@user.com", password = "123456", roles = "USER")
+    @WithUserDetails("user@user.com")
     void shouldGetUserDetail() throws Exception {
         mockMvc.perform(get(path.concat("/detail"))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.time.LocalDate;
 
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@WithMockUser(username = "user@user.com", password = "123456", roles = "USER")
+@WithUserDetails("user@user.com")
 class CharacterControllerTest extends ConfigTestClass {
 
     private final String path = "/character";
@@ -88,6 +88,10 @@ class CharacterControllerTest extends ConfigTestClass {
     @Test
     @DisplayName("Should get character detail")
     void shouldGetCharacterDetail() throws Exception {
+        mockMvc.perform(post(path.concat("/1"))
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
         mockMvc.perform(get(path.concat("/detail"))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -97,6 +101,10 @@ class CharacterControllerTest extends ConfigTestClass {
     @Test
     @DisplayName("Should logout character")
     void shouldLogoutCharacter() throws Exception {
+        mockMvc.perform(post(path.concat("/1"))
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
         mockMvc.perform(post(path.concat("/logout"))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="20220921101200-1" author="charles-lana">
+        <insert tableName="tb_user">
+            <column name="id" value="1"/>
+            <column name="email" value="user@user.com"/>
+            <column name="password" value="$2a$10$Fei2EYmCHla3YDmnfGBg5e4I2TjZoPDKgZNrfqSs0oTa8E76vhtTW"/>
+            <column name="role" value="USER"/>
+            <column name="status" value="INACTIVE"/>
+        </insert>
+
+        <insert tableName="tb_user">
+            <column name="id" value="2"/>
+            <column name="email" value="admin@admin.com"/>
+            <column name="password" value="$2a$10$i5iLVXcwcUSBDa4XNE4EUeP63HNE5w29FNDQeP.wdtNnGReo.wlVm"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="20220921101200-2" author="charles-lana">
+        <update tableName="tb_user">
+            <column name="status" value="ACTIVE"/>
+            <where>id='1'</where>
+        </update>
+    </changeSet>
+</databaseChangeLog>

@@ -39,7 +39,7 @@ public class CharacterEntity implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false, length = 20)
     private String name;
 
     @Column(name = "image", nullable = false)
@@ -55,6 +55,9 @@ public class CharacterEntity implements Serializable {
     @Column(name = "banned", nullable = false)
     @Enumerated(EnumType.STRING)
     private BannedEnum banned = BannedEnum.NO;
+
+    @Column(name = "level", nullable = false)
+    private Integer level = 1;
 
     @Column(name = "created_at")
     @CreationTimestamp

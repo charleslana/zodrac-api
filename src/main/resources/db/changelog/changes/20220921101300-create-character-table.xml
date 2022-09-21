@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="20220921101300-1" author="charles-lana">
+
+        <createSequence sequenceName="character_sequence"/>
+
+        <createTable tableName="tb_character">
+            <column type="bigint" name="id">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column type="varchar(20)" name="name">
+                <constraints nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="image" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="gender">
+                <constraints nullable="false"/>
+            </column>
+            <column type="date" name="birth_date">
+                <constraints nullable="false"/>
+            </column>
+            <column type="integer" name="level" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="banned" defaultValue="NO">
+                <constraints nullable="false"/>
+            </column>
+            <column type="timestamp" name="created_at" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column type="timestamp" name="updated_at" defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20220921101300-2" author="charles-lana">
+        <addForeignKeyConstraint baseTableName="tb_character" baseColumnNames="user_id" constraintName="fk_character_user"
+                                 referencedTableName="tb_user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

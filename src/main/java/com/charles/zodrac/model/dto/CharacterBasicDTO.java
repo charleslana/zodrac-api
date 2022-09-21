@@ -20,4 +20,5 @@ public class CharacterBasicDTO implements Serializable {
     private String image;
     private GenderEnum gender;
     private LocalDate birthDate;
+    private Integer level;
 }

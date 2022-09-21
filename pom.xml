@@ -22,6 +22,7 @@
         <junit-vintage-engine.version>5.9.0</junit-vintage-engine.version>
         <java-jwt.version>4.0.0</java-jwt.version>
         <postgresql.version>42.5.0</postgresql.version>
+        <liquibase-version>4.16.0</liquibase-version>
     </properties>
     <dependencies>
         <dependency>
@@ -98,6 +99,15 @@
             <artifactId>java-jwt</artifactId>
             <version>${java-jwt.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -113,6 +123,13 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <configuration>
+                    <propertyFile>src/main/resources/db/liquibase.properties</propertyFile>
                 </configuration>
             </plugin>
         </plugins>

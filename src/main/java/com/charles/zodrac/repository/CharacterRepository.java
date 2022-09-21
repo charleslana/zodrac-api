@@ -27,6 +27,6 @@ public interface CharacterRepository extends JpaRepository<CharacterEntity, Long
     @Query("select c from CharacterEntity c where c.id = ?1 and c.user.id = ?2 and c.banned = ?3")
     Optional<CharacterEntity> findByIdAndUserIdAndBanned(Long id, Long userId, BannedEnum banned);
 
-    @Query("FROM CharacterEntity c where lower(c.name) like %:searchTerm%")
-    Page<CharacterEntity> search(@Param("searchTerm") String searchTerm, Pageable pageable);
+    @Query("select c from CharacterEntity c where c.name like concat('%', :searchTerm, '%')")
+    Page<CharacterEntity> findByNameContaining(@Param("searchTerm") String searchTerm, Pageable pageable);
 }

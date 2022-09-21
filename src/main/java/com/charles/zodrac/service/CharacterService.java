@@ -57,7 +57,7 @@ public class CharacterService {
     public Page<CharacterBasicDTO> search(String searchTerm, Integer page, Integer size) {
         size = FunctionUtils.validatePageSize(size);
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "name");
-        return repository.search(searchTerm.toLowerCase(), pageRequest).map(mapper::toBasicDto);
+        return repository.findByNameContaining(searchTerm.toLowerCase(), pageRequest).map(mapper::toBasicDto);
     }
 
     public void select(Long id) {

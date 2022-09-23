@@ -1,3 +1,6 @@
 spring:
   messages:
     basename: i18n/messages_error, i18n/messages_success
+app:
+  version: '@project.version@'
+  description: '@project.description@'

@@ -1,7 +1,7 @@
 package com.charles.zodrac.service;
 
 import com.charles.zodrac.enums.BannedEnum;
-import com.charles.zodrac.exception.CustomException;
+import com.charles.zodrac.exception.BusinessRuleException;
 import com.charles.zodrac.model.dto.CharacterBasicDTO;
 import com.charles.zodrac.model.dto.CharacterDTO;
 import com.charles.zodrac.model.dto.ResponseDTO;
@@ -11,6 +11,7 @@ import com.charles.zodrac.model.mapper.CharacterMapper;
 import com.charles.zodrac.repository.CharacterRepository;
 import com.charles.zodrac.security.SecurityUtils;
 import com.charles.zodrac.utils.FunctionUtils;
+import com.charles.zodrac.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -43,11 +44,11 @@ public class CharacterService {
         CharacterEntity entity = mapper.toEntity(dto);
         entity.setUser(userEntity);
         repository.save(entity);
-        return new ResponseDTO("character.created", ms);
+        return new ResponseDTO(MessageUtils.CHARACTER_SUCCESS, "character.created", ms);
     }
 
     public CharacterBasicDTO get() {
-        return repository.findById(getAuthCharacter().getId()).map(mapper::toBasicDto).orElseThrow(() -> new CustomException("character.not.found"));
+        return repository.findById(getAuthCharacter().getId()).map(mapper::toBasicDto).orElseThrow(() -> new BusinessRuleException(MessageUtils.CHARACTER_EXCEPTION, "character.not.found"));
     }
 
     public List<CharacterBasicDTO> getAll() {
@@ -57,7 +58,7 @@ public class CharacterService {
     public Page<CharacterBasicDTO> search(String searchTerm, Integer page, Integer size) {
         size = FunctionUtils.validatePageSize(size);
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "name");
-        return repository.findByNameContaining(searchTerm.toLowerCase(), pageRequest).map(mapper::toBasicDto);
+        return repository.search(searchTerm.toLowerCase(), pageRequest).map(mapper::toBasicDto);
     }
 
     public void select(Long id) {
@@ -73,7 +74,7 @@ public class CharacterService {
     public ResponseDTO delete(Long id) {
         CharacterEntity entity = getCharacterId(id);
         repository.delete(entity);
-        return new ResponseDTO("character.delete", ms);
+        return new ResponseDTO(MessageUtils.CHARACTER_SUCCESS, "character.delete", ms);
     }
 
     public CharacterEntity getAuthCharacter() {
@@ -83,24 +84,24 @@ public class CharacterService {
 
     private void existsCharacterId() {
         if (Boolean.FALSE.equals(SecurityUtils.existsCharacterId())) {
-            throw new CustomException("character.not.found");
+            throw new BusinessRuleException(MessageUtils.CHARACTER_EXCEPTION, "character.not.found");
         }
     }
 
     private CharacterEntity getCharacterId(Long id) {
-        return repository.findByIdAndUserIdAndBanned(id, userService.getAuthAccount().getId(), BannedEnum.NO).orElseThrow(() -> new CustomException("character.not.found"));
+        return repository.findByIdAndUserIdAndBanned(id, userService.getAuthAccount().getId(), BannedEnum.NO).orElseThrow(() -> new BusinessRuleException(MessageUtils.CHARACTER_EXCEPTION, "character.not.found"));
     }
 
     private void validateCountExceeded() {
         if (repository.countByUserId(userService.getAuthAccount().getId()) >= 4) {
-            throw new CustomException("character.count.exceeded");
+            throw new BusinessRuleException(MessageUtils.CHARACTER_EXCEPTION, "character.count.exceeded");
         }
     }
 
     private void validateExistsName(CharacterDTO dto) {
         boolean existsByName = repository.existsByNameIgnoreCase(dto.getName());
         if (existsByName) {
-            throw new CustomException("character.exists.name");
+            throw new BusinessRuleException(MessageUtils.CHARACTER_EXCEPTION, "character.exists.name");
         }
     }
 }

@@ -2,7 +2,7 @@ package com.charles.zodrac.service;
 
 import com.charles.zodrac.enums.RoleEnum;
 import com.charles.zodrac.enums.StatusEnum;
-import com.charles.zodrac.exception.CustomException;
+import com.charles.zodrac.exception.BusinessRuleException;
 import com.charles.zodrac.model.dto.ResponseDTO;
 import com.charles.zodrac.model.dto.UserBasicDTO;
 import com.charles.zodrac.model.dto.UserDTO;
@@ -12,6 +12,7 @@ import com.charles.zodrac.model.mapper.UserMapper;
 import com.charles.zodrac.repository.UserRepository;
 import com.charles.zodrac.security.SecurityUtils;
 import com.charles.zodrac.utils.FunctionUtils;
+import com.charles.zodrac.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -47,11 +48,11 @@ public class UserService implements UserDetailsService {
         UserEntity entity = mapper.toEntity(dto);
         entity.setPassword(encoder.encode(dto.getPassword()));
         repository.save(entity);
-        return new ResponseDTO("user.created", ms);
+        return new ResponseDTO(MessageUtils.USER_SUCCESS, "user.created", ms);
     }
 
     public UserBasicDTO get(Long id) {
-        return repository.findById(id).map(mapper::toBasicDto).orElseThrow(() -> new CustomException("user.not.found"));
+        return repository.findById(id).map(mapper::toBasicDto).orElseThrow(() -> new BusinessRuleException(MessageUtils.USER_EXCEPTION, "user.not.found"));
     }
 
     public UserBasicDTO getDetail() {
@@ -70,7 +71,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserEntity getAccountByEmail(String email) {
-        return repository.findByEmail(email).orElseThrow(() -> new CustomException("user.not.exists.email"));
+        return repository.findByEmail(email).orElseThrow(() -> new BusinessRuleException(MessageUtils.USER_EXCEPTION, "user.not.exists.email"));
     }
 
     public List<GrantedAuthority> getRoles(String email) {
@@ -89,7 +90,7 @@ public class UserService implements UserDetailsService {
     private void validateExistsEmail(UserDTO dto) {
         boolean existsByEmail = repository.existsByEmail(dto.getEmail());
         if (existsByEmail) {
-            throw new CustomException("user.exists.email");
+            throw new BusinessRuleException(MessageUtils.USER_EXCEPTION, "user.exists.email");
         }
     }
 }

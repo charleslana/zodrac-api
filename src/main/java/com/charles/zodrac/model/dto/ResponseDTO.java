@@ -15,9 +15,11 @@ public class ResponseDTO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private String status;
     private String message;
 
-    public ResponseDTO(String message, MessageSource ms) {
+    public ResponseDTO(String status, String message, MessageSource ms) {
+        this.status = ms.getMessage(status, null, LocaleUtils.currentLocale());
         this.message = ms.getMessage(message, null, LocaleUtils.currentLocale());
     }
 }
